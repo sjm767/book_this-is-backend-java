@@ -1,29 +1,21 @@
 package com.jaeshim.product.management.repository;
 
-import com.jaeshim.product.management.entity.Product;
-import org.springframework.stereotype.Repository;
+import com.jaeshim.product.management.entity.domain.Product;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
-public class ProductRepository {
-    private final List<Product> products = new CopyOnWriteArrayList<>();
-    private final AtomicLong productId = new AtomicLong();
+public interface ProductRepository {
+    Product save(Product product);
 
-    public Product save(Product product) {
-        long id = productId.incrementAndGet();
-        product.setId(id);
-        products.add(product);
-        return product;
-    }
+    List<Product> findAll();
 
-    public List<Product> findAll() {
-        return products;
-    }
+    void clearAll();
 
-    public void clearAll() {
-        products.clear();
-    }
+    Product findById(Long id);
+
+    List<Product> findByNameContains(String productName);
+
+    Product update(Long id, Product product);
+
+    void deleteById(Long id);
 }
