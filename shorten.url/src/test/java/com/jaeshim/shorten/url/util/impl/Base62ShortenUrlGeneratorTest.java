@@ -16,7 +16,7 @@ class Base62ShortenUrlGeneratorTest {
         // given
         String url = "https://jaemni.tistory.com/entry/Windows-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-h2db-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0";
 
-        int actual = generator.generateShortenUrl(url, 8).length();
+        int actual = generator.generateShortenUrl(8).length();
         assertThat(actual).isEqualTo(8);
     }
 }

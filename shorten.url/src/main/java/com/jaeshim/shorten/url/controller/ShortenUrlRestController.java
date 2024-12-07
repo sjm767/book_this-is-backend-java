@@ -20,13 +20,13 @@ public class ShortenUrlRestController {
 
     private final ShortenUrlService shortenUrlService;
 
-    //단축 URL 얻기
+    // 단축 URL 얻기
     @PostMapping("/shorten-url")
     public ResponseEntity<ShortenUrlCreateResponseDto> getShortenUrl(@Valid @RequestBody ShortenUrlCreateRequestDto request) {
         return new ResponseEntity<>(shortenUrlService.createShortenUrl(request), HttpStatus.OK);
     }
 
-    //리다이렉트 URL 얻기
+    // 리다이렉트 URL 얻기
     @GetMapping("/{shortenUrlKey}")
     public ResponseEntity<?> getRedirectUrl(@Valid @PathVariable String shortenUrlKey) throws URISyntaxException {
         String orgUrl = shortenUrlService.getRedirectUrl(shortenUrlKey);
@@ -38,7 +38,7 @@ public class ShortenUrlRestController {
         return new ResponseEntity<>(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
     }
 
-    //정보 조회
+    // 정보 조회
     @GetMapping("/shorten-url/{shortenUrlKey}")
     public ResponseEntity<ShortenUrlInformationDto> getShortenUrlInfo(@Valid @PathVariable String shortenUrlKey) {
         ShortenUrlInformationDto info = shortenUrlService.getShortenUrlInformation(shortenUrlKey);

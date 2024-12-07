@@ -4,6 +4,7 @@ package com.jaeshim.shorten.url.service.impl;
 import com.jaeshim.shorten.url.dto.request.ShortenUrlCreateRequestDto;
 import com.jaeshim.shorten.url.dto.response.ShortenUrlCreateResponseDto;
 import com.jaeshim.shorten.url.dto.response.ShortenUrlInformationDto;
+import com.jaeshim.shorten.url.exception.NotFoundShortenUrlException;
 import com.jaeshim.shorten.url.repository.ShortenUrlRepository;
 import com.jaeshim.shorten.url.repository.impl.ShortenUrlRepositoryImpl;
 import com.jaeshim.shorten.url.service.ShortenUrlService;
@@ -39,7 +40,7 @@ class ShortenUrlServiceImplTest {
 
         // then
         assertThat(actual.getOriginalUrl()).isEqualTo(originalUrl);
-        assertThat(actual.getShortenUrlKey().length()).isEqualTo(8);
+        assertThat(actual.getShortenUrl().length()).isEqualTo(8);
     }
 
     @Test
@@ -49,7 +50,7 @@ class ShortenUrlServiceImplTest {
         String originalUrl = "https://jaemni.tistory.com/entry/Windows-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-h2db-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0";
         ShortenUrlCreateRequestDto request = new ShortenUrlCreateRequestDto(originalUrl);
 
-        String shortenUrlKey = shortenUrlService.createShortenUrl(request).getShortenUrlKey();
+        String shortenUrlKey = shortenUrlService.createShortenUrl(request).getShortenUrl();
 
         // when
         String actual = shortenUrlService.getRedirectUrl(shortenUrlKey);
@@ -64,7 +65,7 @@ class ShortenUrlServiceImplTest {
         String originalUrl = "https://jaemni.tistory.com/entry/Windows-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-h2db-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0";
         ShortenUrlCreateRequestDto request = new ShortenUrlCreateRequestDto(originalUrl);
 
-        String shortenUrlKey = shortenUrlService.createShortenUrl(request).getShortenUrlKey();
+        String shortenUrlKey = shortenUrlService.createShortenUrl(request).getShortenUrl();
 
         // when
         shortenUrlService.getRedirectUrl(shortenUrlKey);
@@ -75,5 +76,29 @@ class ShortenUrlServiceImplTest {
 
         // then
         assertThat(actual.getRedirectCount()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 단축 URL을 조회했을 때 예외가 발생하는지 검증")
+    void notFoundShortenUrlExceptionTest() {
+        // given
+        String shortenUrlKey = "11123123";
+
+        // when, then
+        assertThatThrownBy(() -> {
+            shortenUrlService.getRedirectUrl(shortenUrlKey);
+        }).isInstanceOf(NotFoundShortenUrlException.class);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 단축 URL을 정보를 조회했을 때 예외가 발생하는지 검증")
+    void notFoundShortenUrlExceptionInfoTest() {
+        // given
+        String shortenUrlKey = "11123123";
+
+        // when, then
+        assertThatThrownBy(() -> {
+            shortenUrlService.getShortenUrlInformation(shortenUrlKey);
+        }).isInstanceOf(NotFoundShortenUrlException.class);
     }
 }

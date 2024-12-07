@@ -13,7 +13,7 @@ public class Base62ShortenUrlGenerator implements ShortenUrlGenerator {
 
     @Override
     // Base62 인코딩을 통한 단축 URL 생성
-    public String generateShortenUrl(String url, int urlLength) {
+    public String generateShortenUrl(int urlLength) {
         // 1. 고유 ID 생성
         long id = counter.getAndIncrement();
 

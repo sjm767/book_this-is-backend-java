@@ -11,4 +11,5 @@ public interface ShortenUrlService {
     String getRedirectUrl(String shortenUrlKey);
 
     ShortenUrlInformationDto getShortenUrlInformation(String shortenUrlKey);
+
 }
